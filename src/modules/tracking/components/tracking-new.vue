@@ -66,8 +66,13 @@
                     latitude: parseFloat(this.latitude),
                     longitude: parseFloat(this.longitude),
                     elevation: parseFloat(this.elevation)
-                }
-                console.log(data);
+                };
+                trackingService.createTracking(data)
+                    .then(
+                        (response) => {
+                            console.log(response.data);
+                        }
+                    )
             },
             getProducts() {
                 trackingService.getAllProducts(this.pageIndex, this.pageSize)

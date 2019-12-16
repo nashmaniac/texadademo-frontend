@@ -6,6 +6,9 @@ const trackingService = {
                 pageIndex, pageSize
             }
         });
+    },
+    createTracking: function (data) {
+        return api.post('/products/api/v1/tracking', data);
     }
 };
 export default trackingService;
