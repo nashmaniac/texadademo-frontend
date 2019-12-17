@@ -1,9 +1,9 @@
 import api from '@/network'
 const trackingService = {
-    getAllProducts: function(pageIndex, pageSize) {
+    getAllProducts: function(pageIndex, pageSize, searchTerm) {
         return api.get('/products/api/v1/', {
             params: {
-                pageIndex, pageSize
+                pageIndex, pageSize, searchTerm
             }
         });
     },
