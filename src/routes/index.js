@@ -1,6 +1,7 @@
 import VueRouter from "vue-router";
 import Vue from 'vue';
 import trackingRoutes from '@/modules/tracking/routes';
+import productRoutes from '@/modules/products/routes';
 
 Vue.use(VueRouter);
 var routes = [
@@ -12,6 +13,7 @@ var routes = [
     }
 ];
 routes = routes.concat(trackingRoutes);
+routes = routes.concat(productRoutes);
 
 const router = new VueRouter({
     mode: 'history',

@@ -1,16 +1,24 @@
 <template>
   <div id="app" class="container container-fluid">
-    <router-view></router-view>
+    <div class="row">
+      <div class="col-12 form-group">
+        <navigation></navigation>
+      </div>
+      <div class="col-12 form-group">
+        <router-view></router-view>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
+  import navigation from './components/navigation'
+
 
 export default {
   name: 'app',
   components: {
-    // HelloWorld
+    navigation
   }
 }
 </script>
@@ -22,6 +30,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
 }
 </style>
