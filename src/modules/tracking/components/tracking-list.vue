@@ -1,10 +1,15 @@
 <template>
    <div>
        <div class="row">
-           <div class="col-12">
+           <div class="col-6">
+               <search-bar @search="onSearch"></search-bar>
+           </div>
+           <div class="col-6">
                <div align="right">
                    <router-link :to="{name: 'tracking:new'}" class="btn btn-primary">Add</router-link>
                </div>
+           </div>
+           <div class="col-12">
                <table class="table table-striped">
                    <tr>
                        <th v-for="(c, index) in columns" :key="'header-'+index">{{c}}</th>
@@ -19,6 +24,13 @@
                        <td>{{t.modified | convertToCurrentTimeZone(timezone) |formatString('MM/DD/YYYY hh:mm a')}}</td>
                    </tr>
                </table>
+           </div>
+           <div class="col-12">
+               <pagination
+                       @page="onPage"
+                       :page-size="pageSize"
+                       :page-index="pageIndex"
+                       :total-count="totalCount"></pagination>
            </div>
        </div>
 
@@ -36,6 +48,7 @@
                 pageSize: 100,
                 trackingList: [],
                 totalCount: 0,
+                searchTerm: null,
                 columns: [
                     'Product ID',
                     'Description',
@@ -54,8 +67,18 @@
             console.log(this.timezone);
         },
         methods: {
+            onSearch(searchTerm) {
+                this.searchTerm = searchTerm;
+                this.pageIndex = 0;
+                this.getAllTracking();
+            },
+            onPage(page) {
+                this.pageIndex = page.page;
+                this.pageSize = page.limit;
+                this.getAllTracking();
+            },
             getAllTracking() {
-                trackingService.getAllTracking(this.pageIndex, this.pageSize)
+                trackingService.getAllTracking(this.pageIndex, this.pageSize, this.searchTerm)
                     .then(
                         (response) => {
                             const data = response.data;
