@@ -48,6 +48,7 @@
                 pageSize: 100,
                 trackingList: [],
                 totalCount: 0,
+                searchTerm: null,
                 columns: [
                     'Product ID',
                     'Description',
@@ -67,7 +68,9 @@
         },
         methods: {
             onSearch(searchTerm) {
-                console.log(searchTerm);
+                this.searchTerm = searchTerm;
+                this.pageIndex = 0;
+                this.getAllTracking();
             },
             onPage(page) {
                 this.pageIndex = page.page;
@@ -75,7 +78,7 @@
                 this.getAllTracking();
             },
             getAllTracking() {
-                trackingService.getAllTracking(this.pageIndex, this.pageSize)
+                trackingService.getAllTracking(this.pageIndex, this.pageSize, this.searchTerm)
                     .then(
                         (response) => {
                             const data = response.data;
