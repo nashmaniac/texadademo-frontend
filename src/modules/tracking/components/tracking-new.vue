@@ -8,16 +8,16 @@
                 </select>
             </div>
             <div class="col-12 form-group">
-                <input class="form-control" v-model="timestamp" type="datetime-local" placeholder="Time"/>
+                <datetime placeholder="Time in your timezone" input-class="form-control" type="datetime" v-model="timestamp"></datetime>
             </div>
             <div class="col-12 form-group">
-                <input type="text" v-model="latitude" class="form-control" placeholder="latitude"/>
+                <input type="text" v-model="latitude" class="form-control" placeholder="Latitude"/>
             </div>
             <div class="col-12 form-group">
-                <input type="text" v-model="longitude" class="form-control" placeholder="longitude"/>
+                <input type="text" v-model="longitude" class="form-control" placeholder="Longitude"/>
             </div>
             <div class="col-12 form-group">
-                <input type="text" v-model="elevation" class="form-control" placeholder="elevation"/>
+                <input type="text" v-model="elevation" class="form-control" placeholder="Elevation"/>
             </div>
             <div class="col-12 form-group" align="left">
                 <button class="btn btn-primary" @click="onClickCreate">Create New Tracking</button>
@@ -70,7 +70,9 @@
                 trackingService.createTracking(data)
                     .then(
                         (response) => {
-                            console.log(response.data);
+                            this.$router.push({
+                                name: 'tracking:home'
+                            });
                         }
                     )
             },
