@@ -28,6 +28,7 @@
 
 <script>
     import trackingService from "@/modules/tracking/services";
+    import notificationUtils from "@/utils/notifications";
 
     export default {
         name: "trackingNew",
@@ -46,18 +47,35 @@
         methods: {
             onClickCreate() {
                 if (!this.product) {
+                    notificationUtils.showToast('Product is required');
                     return
                 }
                 if (!this.timestamp) {
+                    notificationUtils.showToast('Timestamp is required');
                     return
                 }
                 if (!this.latitude) {
+                    notificationUtils.showToast('Latitude is required');
                     return
                 }
                 if (!this.longitude) {
+                    notificationUtils.showToast('Longitude is required');
                     return
                 }
                 if (!this.elevation) {
+                    notificationUtils.showToast('Elevation is required');
+                    return
+                }
+                if (isNaN(this.latitude)) {
+                    notificationUtils.showToast('Latitude should be a number');
+                    return
+                }
+                if (isNaN(this.longitude)) {
+                    notificationUtils.showToast('Longitude should be a number');
+                    return
+                }
+                if (isNaN(this.elevation)) {
+                    notificationUtils.showToast('Elevation should be a number');
                     return
                 }
                 const data = {
@@ -70,9 +88,13 @@
                 trackingService.createTracking(data)
                     .then(
                         (response) => {
+                            notificationUtils.showToast('Tracking created successfully');
                             this.$router.push({
                                 name: 'tracking:home'
                             });
+                        },
+                        (error) => {
+                            notificationUtils.showToast(JSON.parse(error.request.response).message);
                         }
                     )
             },
@@ -83,7 +105,7 @@
                             this.productList = response.data.data;
                         },
                         (error) => {
-                            console.log(error);
+                            notificationUtils.showToast(JSON.parse(error.request.response).message);
                         }
                     );
             }

@@ -20,6 +20,7 @@
 
 <script>
     import productService from "@/modules/products/services";
+    import notificationUtils from "@/utils/notifications";
 
     export default {
         name: "productEdit",
@@ -58,6 +59,7 @@
             },
             onClickSave() {
                 if (!this.name) {
+                    notificationUtils.showToast('Name is required');
                     return ;
                 }
                 const data = {
@@ -66,12 +68,13 @@
                 productService.editProduct(this.productId, data)
                     .then(
                         (response) => {
+                            notificationUtils.showToast('Product updated successfully');
                             this.$router.push({
                                 name: 'product:home'
                             });
                         },
                         (error) => {
-
+                            notificationUtils.showToast(JSON.parse(error.request.response).message);
                         }
                     );
             }

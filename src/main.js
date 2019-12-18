@@ -9,7 +9,12 @@ import 'vue-datetime/dist/vue-datetime.css'
 import Pagination from '@/components/pagination';
 import SearchBar from '@/components/search-bar';
 import 'font-awesome/css/font-awesome.min.css';
-
+var toastedoptions = {
+  position: 'top-right',
+  duration: 3000
+}
+import Toasted from 'vue-toasted'
+Vue.use(Toasted, toastedoptions);
 Vue.component('datetime', Datetime);
 Vue.component('pagination', Pagination);
 Vue.component('search-bar', SearchBar);
