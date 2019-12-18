@@ -66,6 +66,18 @@
                     notificationUtils.showToast('Elevation is required');
                     return
                 }
+                if (isNaN(this.latitude)) {
+                    notificationUtils.showToast('Latitude should be a number');
+                    return
+                }
+                if (isNaN(this.longitude)) {
+                    notificationUtils.showToast('Longitude should be a number');
+                    return
+                }
+                if (isNaN(this.elevation)) {
+                    notificationUtils.showToast('Elevation should be a number');
+                    return
+                }
                 const data = {
                     product: this.product,
                     timestamp: this.timestamp,
