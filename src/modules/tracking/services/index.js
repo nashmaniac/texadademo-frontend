@@ -1,19 +1,19 @@
 import api from '@/network'
 const trackingService = {
-    getAllProducts: function(pageIndex, pageSize, searchTerm) {
+    getAllProducts: function(pageIndex, pageSize, searchTerm, currentSort, currentSortDir) {
         return api.get('/products/api/v1/', {
             params: {
-                pageIndex, pageSize, searchTerm
+                pageIndex, pageSize, searchTerm, currentSort, currentSortDir
             }
         });
     },
     createTracking: function (data) {
         return api.post('/products/api/v1/tracking', data);
     },
-    getAllTracking: function(pageIndex, pageSize, searchTerm) {
+    getAllTracking: function(pageIndex, pageSize, searchTerm, currentSort, currentSortDir, selectedProduct, selectedDate, timezone) {
         return api.get('/products/api/v1/tracking', {
             params: {
-                pageIndex, pageSize, searchTerm
+                pageIndex, pageSize, searchTerm, currentSort, currentSortDir, selectedProduct, selectedDate, timezone
             }
         });
     },
