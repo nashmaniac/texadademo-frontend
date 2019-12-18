@@ -12,7 +12,7 @@
            <div class="col-12">
                <table class="table table-striped">
                    <tr>
-                       <th v-for="(c, index) in columns" :key="'header-'+index">{{c}}</th>
+                       <th @click="changeSort(sortingList[index])" v-for="(c, index) in columns" :key="'header-'+index">{{c}} <span v-if="currentSort===sortingList[index]"><i v-if="currentSortDir=='asc'" class="fa fa-arrow-up"></i><i v-if="currentSortDir=='desc'" class="fa fa-arrow-down"></i> </span></th>
                    </tr>
                    <tr v-for="(t, index) in trackingList" :key="'tracking-row'+index">
                        <td><router-link :to="{name: 'tracking:edit', params: {trackingId: t.id}}">{{t.product.id}}</router-link></td>
@@ -58,7 +58,18 @@
                     'Elevation',
                     'Updated',
                 ],
-                timezone: null
+                sortingList: [
+                    'product__id',
+                    'product__name',
+                    'timestamp',
+                    'latitude',
+                    'longitude',
+                    'elevation',
+                    'modified'
+                ],
+                timezone: null,
+                currentSort: null,
+                currentSortDir: null
             }
         },
         mounted() {
@@ -72,13 +83,25 @@
                 this.pageIndex = 0;
                 this.getAllTracking();
             },
+            changeSort(sorted_params) {
+                if (this.currentSort !== sorted_params) {
+                    this.currentSortDir = 'asc';
+                } else if (!this.currentSortDir || this.currentSortDir === 'desc') {
+                    this.currentSortDir = 'asc';
+                } else {
+                    this.currentSortDir = 'desc';
+                }
+                this.currentSort = sorted_params;
+                this.pageIndex = 0;
+                this.getAllTracking();
+            },
             onPage(page) {
                 this.pageIndex = page.page;
                 this.pageSize = page.limit;
                 this.getAllTracking();
             },
             getAllTracking() {
-                trackingService.getAllTracking(this.pageIndex, this.pageSize, this.searchTerm)
+                trackingService.getAllTracking(this.pageIndex, this.pageSize, this.searchTerm, this.currentSort, this.currentSortDir)
                     .then(
                         (response) => {
                             const data = response.data;

@@ -14,7 +14,7 @@
             <div class="col-12 form-group">
                 <table class="table table-striped">
                     <tr>
-                        <th v-for="(h, i) in columns" :key="'header-'+i">{{h}}</th>
+                        <th @click="changeSort(sortedList[i])" v-for="(h, i) in columns" :key="'header-'+i">{{h}} <span v-if="currentSort===sortedList[i]"><i v-if="currentSortDir=='asc'" class="fa fa-arrow-up"></i><i v-if="currentSortDir=='desc'" class="fa fa-arrow-down"></i> </span></th>
                     </tr>
                     <tr v-for="(p, i) in productList" :key="'product-'+i">
                         <td><router-link :to="{name: 'product:edit', params: {productId: p.id}}">{{p.id}}</router-link></td>
@@ -51,6 +51,11 @@
                     'ID',
                     'Name',
                     'Updated'
+                ],
+                currentSort: null,
+                currentSortDir: null,
+                sortedList: [
+                    'id', 'name', 'modified'
                 ]
             }
         },
@@ -65,8 +70,20 @@
                 this.pageSize = page.limit;
                 this.getProducts();
             },
+            changeSort(sorted_params) {
+                if (this.currentSort !== sorted_params) {
+                    this.currentSortDir = 'asc';
+                } else if (!this.currentSortDir || this.currentSortDir === 'desc') {
+                    this.currentSortDir = 'asc';
+                } else {
+                    this.currentSortDir = 'desc';
+                }
+                this.currentSort = sorted_params;
+                this.pageIndex = 0;
+                this.getProducts();
+            },
             getProducts() {
-                trackingService.getAllProducts(this.pageIndex, this.pageSize, this.searchTerm)
+                trackingService.getAllProducts(this.pageIndex, this.pageSize, this.searchTerm, this.currentSort, this.currentSortDir)
                 .then(
                     (response) => {
                         this.productList = response.data.data;
