@@ -10,10 +10,10 @@ const trackingService = {
     createTracking: function (data) {
         return api.post('/products/api/v1/tracking', data);
     },
-    getAllTracking: function(pageIndex, pageSize, searchTerm, currentSort, currentSortDir) {
+    getAllTracking: function(pageIndex, pageSize, searchTerm, currentSort, currentSortDir, selectedProduct, selectedDate, timezone) {
         return api.get('/products/api/v1/tracking', {
             params: {
-                pageIndex, pageSize, searchTerm, currentSort, currentSortDir
+                pageIndex, pageSize, searchTerm, currentSort, currentSortDir, selectedProduct, selectedDate, timezone
             }
         });
     },

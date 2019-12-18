@@ -1,10 +1,20 @@
 <template>
    <div>
        <div class="row">
-           <div class="col-6">
+           <div class="col-3 form-group">
+               <select @change="changeProduct(selectedProduct)" v-model="selectedProduct" class="form-control">
+                   <option value="null">Select Product</option>
+                   <option :value="p.id" v-for="(p,index) in productList" :key="'product-option'+index">{{p.name}}</option>
+               </select>
+           </div>
+           <div class="col-3 form-group">
                <search-bar @search="onSearch"></search-bar>
            </div>
-           <div class="col-6">
+           <div class="col-3 form-group">
+               <datetime @close="changeDate(selectedDate)" v-model="selectedDate" placeholder="Date" type="date" input-class="form-control"></datetime>
+           </div>
+
+           <div class="col-3 form-group">
                <div align="right">
                    <router-link :to="{name: 'tracking:new'}" class="btn btn-primary">Add</router-link>
                </div>
@@ -69,15 +79,40 @@
                 ],
                 timezone: null,
                 currentSort: null,
-                currentSortDir: null
+                currentSortDir: null,
+                productList: [],
+                selectedProduct: null,
+                selectedDate: null
             }
         },
         mounted() {
             this.getAllTracking();
             this.timezone = moment.tz.guess();
-            console.log(this.timezone);
+            this.getProducts();
         },
         methods: {
+            changeDate(selected_date) {
+                console.log(selected_date);
+                this.selectedDate = selected_date;
+                this.pageIndex = 0;
+                this.getAllTracking();
+            },
+            changeProduct(product) {
+                this.selectedProduct = product;
+                this.pageIndex = 0;
+                this.getAllTracking();
+            },
+            getProducts() {
+                trackingService.getAllProducts(this.pageIndex, this.pageSize)
+                    .then(
+                        (response) => {
+                            this.productList = response.data.data;
+                        },
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
+            },
             onSearch(searchTerm) {
                 this.searchTerm = searchTerm;
                 this.pageIndex = 0;
@@ -101,7 +136,8 @@
                 this.getAllTracking();
             },
             getAllTracking() {
-                trackingService.getAllTracking(this.pageIndex, this.pageSize, this.searchTerm, this.currentSort, this.currentSortDir)
+                trackingService.getAllTracking(this.pageIndex, this.pageSize, this.searchTerm,
+                    this.currentSort, this.currentSortDir, this.selectedProduct, this.selectedDate, this.timezone)
                     .then(
                         (response) => {
                             const data = response.data;
