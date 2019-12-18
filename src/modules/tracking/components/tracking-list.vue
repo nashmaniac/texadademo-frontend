@@ -3,7 +3,7 @@
        <div class="row">
            <div class="col-3 form-group">
                <select @change="changeProduct(selectedProduct)" v-model="selectedProduct" class="form-control">
-                   <option value="null">Select Product</option>
+                   <option :value="null">Select Product</option>
                    <option :value="p.id" v-for="(p,index) in productList" :key="'product-option'+index">{{p.name}}</option>
                </select>
            </div>
@@ -12,6 +12,7 @@
            </div>
            <div class="col-3 form-group">
                <datetime @close="changeDate(selectedDate)" v-model="selectedDate" placeholder="Date" type="date" input-class="form-control"></datetime>
+               <i @click="changeDate(null)" class="fa fa-remove"></i>
            </div>
 
            <div class="col-3 form-group">
@@ -92,7 +93,6 @@
         },
         methods: {
             changeDate(selected_date) {
-                console.log(selected_date);
                 this.selectedDate = selected_date;
                 this.pageIndex = 0;
                 this.getAllTracking();
