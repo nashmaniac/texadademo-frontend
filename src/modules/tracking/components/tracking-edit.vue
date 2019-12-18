@@ -37,6 +37,7 @@
 
 <script>
     import trackingService from "@/modules/tracking/services";
+    import notificationUtils from "@/utils/notifications";
     export default {
         name: "trackingEdit",
         data() {
@@ -101,18 +102,23 @@
             },
             onClickSave() {
                 if (!this.product) {
+                    notificationUtils.showToast('Product is required');
                     return
                 }
                 if (!this.timestamp) {
+                    notificationUtils.showToast('Timestamp is required');
                     return
                 }
                 if (!this.latitude) {
+                    notificationUtils.showToast('Latitude is required');
                     return
                 }
                 if (!this.longitude) {
+                    notificationUtils.showToast('Longitude is required');
                     return
                 }
                 if (!this.elevation) {
+                    notificationUtils.showToast('Elevation is required');
                     return
                 }
                 const data = {
@@ -125,11 +131,15 @@
                 trackingService.editTracking(this.trackingId, data)
                     .then(
                         (response) => {
+                            notificationUtils.showToast('Tracking updated successfully');
                             this.trackingDetail = response.data;
                             this.assignValues();
                             // this.$router.push({
                             //     name: 'tracking:home'
                             // });
+                        },
+                        (error) => {
+                            notificationUtils.showToast(JSON.parse(error.request.response).message);
                         }
                     )
             }
